@@ -1,0 +1,110 @@
+{
+  "_comment": "One illustrative annotated record across all three levels (sentence, token, morpheme), from the Igbo_Fine project. This is a single sample; the full corpus is not published.",
+  "id": 1,
+  "category": "A1. Declarative · Simple present",
+  "sentence": {
+    "text_surface": "ọ́ nà èrí ńrī",
+    "text_lemma": "ó nà È-rí ńrí",
+    "translation_free": "He eats",
+    "translation_literal": "He / She / it is  eating food",
+    "force": "declarative",
+    "aspect": "simple_present",
+    "polarity": "affirmative"
+  },
+  "tokens": [
+    {
+      "index": 1,
+      "form": "ọ́",
+      "lemma": "ó",
+      "pos": "PRON",
+      "pos_fine_pos": "PRON",
+      "tone_realised": "H",
+      "tone_lexical": "Unsp",
+      "tone_role": "Dep",
+      "tone_control": "Context.Force:Declarative",
+      "tone_map": "",
+      "atr_realised": "Minus",
+      "atr_role": "Dep",
+      "atr_control": "VerbForm:Fin"
+    },
+    {
+      "index": 2,
+      "form": "nà",
+      "lemma": "nà",
+      "pos": "AUX",
+      "pos_fine_pos": "AUX",
+      "tone_realised": "L",
+      "tone_lexical": "Unsp",
+      "tone_role": "Dep",
+      "tone_control": "Polarity:Pos+Context.Force:Declarative+ClauseType:Main",
+      "tone_map": "",
+      "atr_realised": "Minus",
+      "atr_role": "Ctrl",
+      "atr_control": "self"
+    },
+    {
+      "index": 3,
+      "form": "èrí",
+      "lemma": "rí",
+      "pos": "VERB",
+      "pos_fine_pos": "VWORD",
+      "tone_realised": "LH",
+      "tone_lexical": "",
+      "tone_role": "",
+      "tone_control": "",
+      "tone_map": "",
+      "atr_realised": "Plus",
+      "atr_role": "",
+      "atr_control": "",
+      "morphemes": [
+        {
+          "index": "3.1",
+          "type": "Prefix",
+          "form": "è",
+          "lemma": "È",
+          "pos": "PART",
+          "tone_realised": "L",
+          "tone_lexical": "Unsp",
+          "tone_role": "Dep",
+          "tone_control": "VerbRoot",
+          "tone_map": "Inverse",
+          "atr_realised": "Minus",
+          "atr_role": "Dep",
+          "atr_control": "VerbRoot+ClauseType:Main",
+          "atr_map": "Harmony"
+        },
+        {
+          "index": "3.2",
+          "type": "ROOT",
+          "form": "rí",
+          "lemma": "rí",
+          "pos": "VERB",
+          "tone_realised": "H",
+          "tone_lexical": "H",
+          "tone_role": "Dep",
+          "tone_control": "Tense:Pres+ClauseType:Main",
+          "tone_map": "Identity",
+          "atr_realised": "Plus",
+          "atr_role": "",
+          "atr_control": "Ctrl",
+          "atr_map": "Identity"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "form": "ńrī",
+      "lemma": "ńrí",
+      "pos": "NOUN",
+      "pos_fine_pos": "NOUN",
+      "tone_realised": "HM",
+      "tone_lexical": "HH",
+      "tone_role": "Dep",
+      "tone_control": "VerbForm:Part+NPPosition:Final",
+      "tone_map": "LowerRightmostToMid",
+      "atr_realised": "Plus",
+      "atr_role": "Inherent",
+      "atr_control": ""
+    }
+  ]
+}
