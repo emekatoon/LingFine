@@ -98,16 +98,20 @@ languages whose orthography under-represents tone and vowel harmony.
 <!-- SCREENSHOT: an export view or a rendered CoNLL-U snippet — caption it to show the two-level CoNLL-U output -->
 ![Export](docs/images/export.png)
 
-## How to run
+## Running LingFine
 
-LingFine is a single self-contained HTML file with no build step and no
-dependencies. Open it in a modern browser:
+LingFine is designed to run in a web browser.
 
-1. Download the annotation-tool HTML file.
-2. Open it directly in Chrome, Edge, or Firefox.
+### Local use
 
-No installation, server, or network connection is required for annotation.
+1. Download or clone this repository.
+2. Open `LingFine.html` in a modern web browser.
+3. Load or create an annotation project.
+4. Use the annotation interface to create sentence-, token-, and
+   morpheme-level annotations.
+5. Export the resulting resources as supported by the application.
 
+No server-side installation is required for the standalone research prototype.
 ## Documentation
 
 - [Annotation guide](docs/annotation-guide.md)
