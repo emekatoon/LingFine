@@ -1,0 +1,10 @@
+## Research status
+
+LingFine is an active research prototype. The current implementation is being
+developed and evaluated using Igbo as an initial testing language. The
+architecture is designed to support extension to other languages and
+annotation frameworks.
+
+The repository documents the current research implementation and annotation
+framework; interfaces, schemas, and workflows may change as development
+continues.
