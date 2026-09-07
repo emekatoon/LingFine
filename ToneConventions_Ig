@@ -1,0 +1,68 @@
+# Tone conventions
+
+This document defines how tone is notated and encoded in LingFine annotations
+for Igbo: the notation system, the distinction between lexical and realised
+marking, and the encoding and Unicode normalisation rules that keep the data
+consistent.
+
+## Notation
+
+Igbo tone is a three-level register system. Tones are annotated with the
+following atomic values:
+
+| Category | Symbol | Diacritic (on a vowel) | Description |
+| --- | --- | --- | --- |
+| High | H | acute (´) | High register tone |
+| Mid | M | macron (¯) | Mid register tone — post-lexical |
+| Low | L | grave (`) | Low register tone |
+| Unspecified | Unsp | — | Lexically underspecified; assigned in realisation |
+
+Melodies over more than one syllable are written as concatenated symbols in
+order, for example `HH`, `LH`, `HM`, `HLL`. A tone value is recorded for the
+realised (surface) form and, separately, for the lexical form.
+
+**Mid is post-lexical.** Lexical citation tones are H and L. M does not occur as
+a lexical tone; it appears in surface realisation, derived from H or L by a
+named mapping operation in a specific syntactic environment (see the derivation
+section of the [annotation guide](annotation-guide.md)).
+
+## Lexical vs realised marking
+
+Every tone-bearing unit records two tone values, kept in separate fields so the
+derivation between them is explicit rather than lost:
+
+- **Lexical tone** (`Tone_Lemma`) — the underlying tone of the citation form.
+  Values are drawn from H, L, and multi-syllable combinations of them, plus
+  `Unsp` where the lemma is underspecified.
+- **Realised tone** (`Tone`) — the surface tone as actually pronounced in the
+  annotated sentence. This is where M appears.
+
+**When they differ**, the difference is attributed to a triggering environment
+and a mapping operation. For example, the noun `ńrí` has lexical tone HH; in
+final position after a participial verb (in `ọ́ nà èrí ńrī`, "he eats") it
+surfaces as `ńrī` with tone HM. The lexical value HH and realised value HM are
+both recorded, together with the trigger (`VerbForm:Part+NPPosition:Final`) and
+the operation (`LowerRightmostToMid`).
+
+## Encoding
+
+- **Diacritics.** Tone is written with combining diacritics on the vowel:
+  combining acute (U+0301) for High, combining grave (U+0300) for Low, and
+  combining macron (U+0304) for Mid. These are tonal marks only.
+- **What is a tone mark and what is not.** The dot-below (combining dot below,
+  U+0323) is **not** a tone mark. It is a lexical marker of the −ATR vowel class
+  (ị, ọ, ụ, and it distinguishes a from its +ATR counterpart in the harmony
+  system). Tonal diacritics and the dot-below must never be conflated: a vowel
+  may carry both a tone mark and the dot-below at once.
+
+## Unicode normalisation
+
+- **Normalisation form.** Text is normalised to NFC. Comparison and search
+  operate on the NFC form.
+- **Stripping rules.** For tone-insensitive comparison, the three tonal
+  combining marks (U+0301, U+0300, U+0304) may be removed. The dot-below
+  (U+0323) is lexical and is **never** stripped: removing it changes the vowel's
+  ATR class and therefore the word.
+- **Combining-mark order.** Where a base vowel carries both the dot-below and a
+  tone mark, decompose (NFD), apply any tone-only stripping, then recompose
+  (NFC) so that the retained marks are stored in a consistent order.
