@@ -1,0 +1,173 @@
+# Annotation guide
+
+This guide defines the features recorded at each of LingFine's three annotation
+levels, the derivational machinery that links realised forms to their causes,
+the registries built during annotation, the consistency checks applied, hard
+cases the scheme has resolved, and the mapping to export formats.
+
+The values below are drawn from the Igbo annotation as developed. Feature names
+are given in their canonical form; annotators should use the canonical spelling
+(for example `ATR=Plus`, not `PLus` or `plus`, and `VerbForm:Fin`, not
+`VerbForm_Fin`).
+
+## Phonological background
+
+Igbo has an eight-vowel inventory split into two Advanced Tongue Root (ATR)
+harmony classes: **+ATR** {i, e, o, u} and **−ATR** {ị, a, ọ, ụ}. The
+dot-below is a lexical marker of the −ATR class and is not a tone mark; it is
+never stripped. Tone is a three-level register system, High (H), Mid (M), and
+Low (L). Lexical citation tones are H and L; **M is post-lexical** — it arises
+in surface realisation from H or L through named mapping operations in specific
+syntactic environments. See [tone-conventions.md](tone-conventions.md) and
+[../data/phonology.json](../data/phonology.json).
+
+## Sentence level
+
+Sentence-scoped features establish the grammatical environment in which
+token- and morpheme-level realisations are licensed.
+
+| Feature | Description | Values (attested / canonical) |
+| --- | --- | --- |
+| Clause type | Structural clause category | Main, Relative, Decl_Pos |
+| Force | Illocutionary force | Declarative, Interrogative, Jussive |
+| Polarity | Affirmative / negative | Affirmative, Negative |
+| Tense | Tense category | Present, NonPast, Past, Modal |
+| Aspect | Aspectual category | Simple present, Present progressive, Habitual, Perfective, Unmarked |
+| Mood | Mood category | Indicative, Prohibitive |
+| Focus | Focus / information structure | Yes, No |
+| Modality | Modal category (where relevant) | Deontic, Directive |
+| Discourse context | Surrounding discourse conditioning | e.g. DirectiveSpeechAct |
+
+## Token level
+
+Each token carries lexical identity, category, syntactic attachment, and both
+underlying and surface phonological features.
+
+| Feature | Description | Values (attested / canonical) |
+| --- | --- | --- |
+| Lemma | Citation form | free text |
+| POS (coarse) | Part-of-speech category | NOUN, PRON, VERB, AUX, ADP, ADV, DET, CCONJ, SCONJ; VWORD / AUXWORD for word wrappers |
+| Case | Nominal case | Nom, Acc, Gen, Loc, Pred |
+| Dependency relation | Relation to syntactic head | open set (dependency registry) |
+| Realised tone | Surface tone melody | H, L, M and multi-syllable strings (e.g. HM, LH, HLL) |
+| Lexical tone (`Tone_Lemma`) | Underlying tone melody | H, L, HH, HL, LH, Unsp |
+| Tone role (`Tone_Role`) | Controller / dependent / independent | Ctrl, Dep, Independent |
+| Tone control (`ToneCtrl`) | What licenses the realised tone | feature-composition string, e.g. `Polarity:Pos+Context.Force:Declarative+ClauseType:Main` |
+| Tone map (`ToneMap`) | Mapping operation applied | see Derivation |
+| Realised ATR (`ATR`) | Surface ATR value | Plus, Minus |
+| ATR role (`ATR_Role`) | Controller / dependent / inherent | Ctrl, Dep, Inherent |
+| ATR control (`ATRCtrl`) | What licenses the realised ATR | e.g. `self`, `VerbForm:Fin`, `VerbRoot` |
+| ATR map (`ATRMap`) | Harmony behaviour | Harmony, Disharmony, Identity |
+
+## Morpheme level
+
+Complex words decompose into constituent morphemes, each annotated in its own
+right, with word-internal relations recorded. Word wrappers (VWORD / AUXWORD)
+carry the **realised** tone and ATR melody of the whole word; the derivation
+fields (`ToneCtrl`, `ToneMap`, `Tone_Role`) live on the constituents, not the
+wrapper.
+
+| Feature | Description | Values (attested / canonical) |
+| --- | --- | --- |
+| Morpheme boundary (`MorphBoundary`) | Position in the word | Prefix, Suffix (roots unmarked) |
+| POS | Morpheme category | ROOT, PART, AUX, VERB … |
+| Part type (`PartType`) | Sub-category of particle | Affix, Neg, NegJussPart |
+| Form | Surface form of the morpheme | free text |
+| Lemma | Citation form of the morpheme | free text |
+| Tone / `Tone_Lemma` | Realised and lexical tone | as token level |
+| Tone role / control / map | Derivation of the morpheme's tone | as token level |
+| ATR / role / control / map | Realised ATR and its derivation | as token level |
+
+## Derivation
+
+A realised form is linked to its cause through four elements: the underlying
+form, the triggering environment, the mapping operation applied, and — where
+applicable — the identifier of the documented rule that sanctions the change.
+
+**Underlying → trigger → operation → surface.** For example, in `ọ́ nà èrí ńrī`
+("he eats"), the object noun `ńrí` has lexical tone HH. In final position after
+a participial verb it surfaces as `ńrī` (HM): the trigger is
+`VerbForm:Part+NPPosition:Final`, the operation is `LowerRightmostToMid`, and
+the surface melody is HM.
+
+**Mapping operations (`ToneMap`).** Compositional operations name exactly what
+happens to the melody. Canonical operations include:
+
+| Operation | Effect |
+| --- | --- |
+| Identity | Surface equals lexical (the do-nothing operation, named explicitly) |
+| LowerRightmostToMid | Lower the rightmost tone to M |
+| LowerLeftmostToLow | Lower the leftmost tone to L |
+| AssignedHigh / AssignedMid / AssignedLow | Assign a tone where the lemma is underspecified |
+| Inverse | Realise the polar opposite of the controlling tone |
+
+> Earlier drafts used descriptive names such as `LowerObjParticiple`,
+> `LoweringToMid`, and `Transformational`. These are deprecated in favour of the
+> compositional operations above; migrate any remaining instances.
+
+**ATR realisation.** ATR morphemes fall into two classes. **Lexically fixed**
+morphemes compute their ATR from their own vowels. **ATR-dependent**
+(harmonising) affixes have an underspecified vowel selected by the controlling
+root: the affix copies the root's ATR class (`ATR_Role=Dep`, `ATRCtrl` naming
+the root). For example the participle prefix realises as `è-` with a +ATR root
+(`è-rí`) and `à-` with a −ATR root (`à-gbá`).
+
+**Rule citation.** A derivation may cite a rule in the derivation-rule registry
+by its stable identifier (for example `np_final_participle_lowering`), so the
+same realisation is both derived and traceable to documented grammar.
+
+## Registries
+
+- **Lexicon** — POS-keyed lexical items; homophones with distinct categories are
+  kept distinct.
+- **Morpheme inventory** — recurring prefixes, roots, suffixes, and auxiliaries
+  with their attested behaviour.
+- **Derivation rules** — documented rules, each with: the target morpheme class,
+  the underlying tone, the triggering environment, the mapping operation, and a
+  stable `rule_id` for citation.
+
+## Consistency checking
+
+Checks run against the registries and the phonological inventory during
+annotation, warning rather than blocking so the annotator's judgement is final:
+
+- **ATR against the inventory.** Each `ATR` claim is checked by deriving the
+  value from the form's vowels; a claim that disagrees with the vowels is
+  flagged, and a form whose vowels are mixed is flagged as disharmonic.
+- **Tone against the rule catalogue.** Where a token's environment matches a
+  documented rule, the realised tone is checked against the rule's output; a
+  divergence is flagged for review.
+- **Wrapper against constituents.** A word wrapper's realised melody is checked
+  against the concatenation of its constituents' surface tones; a mismatch is
+  flagged.
+- **Canonical value spelling.** Non-canonical spellings (e.g. `PLus`,
+  `VerbForm_Fin`) and malformed feature chunks are flagged.
+
+## Hard cases
+
+- **NP-final lowering vs objecthood.** Final HH nouns after a participle lower
+  to HM. The trigger is NP-final *position*
+  (`VerbForm:Part+NPPosition:Final`), not objecthood as such; this supersedes an
+  earlier objecthood-based analysis.
+- **Word-wrapper tone.** VWORD / AUXWORD wrappers carry the realised word melody
+  in `Tone` / `ATR`, while derivation stays on the constituents. This two-role
+  treatment replaced an earlier rule that forbade tone on wrappers.
+- **ATR-dependent affixes.** Harmonising affixes do not have their ATR computed
+  in isolation; the root controls and the affix copies. This distinction
+  (fixed vs dependent morphemes) is required to derive the prefix vowel
+  correctly for unseen words.
+- **Identity is a `ToneMap` value, not a `ToneCtrl` value.** "No change" is
+  recorded as `ToneMap=Identity` under an explicit licensing environment, kept
+  distinct from "no rule applies."
+
+## Export mapping
+
+| Annotation field | CoNLL-U (treebank) | CoNLL-U (intraword) | Other export |
+| --- | --- | --- | --- |
+| Lemma | LEMMA | — | Lexicon |
+| POS | UPOS / XPOS | — | Lexicon |
+| Dependency relation | DEPREL | — | — |
+| Head | HEAD | — | — |
+| Morpheme decomposition | — | multiword-token rows | Morpheme inventory |
+| Tone / ATR features | FEATS | FEATS | Phonological inventory |
+| Derivation-rule citation | MISC | MISC | Derivation rules |
