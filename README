@@ -117,6 +117,16 @@ No server-side installation is required for the standalone research prototype.
 - [Annotation guide](docs/annotation-guide.md)
 - [Tone conventions](docs/tone-conventions.md)
 
+
+## Reproducibility
+
+The repository contains the current research implementation, annotation
+specifications, example data, and documentation required to inspect the
+representation and annotation workflow.
+
+Example annotations are provided to illustrate how linguistic properties,
+relationships, and derivational operations are represented.
+
 ## Status
 
 Version 0.1.0 — first public release. The tool is in active use. Development
