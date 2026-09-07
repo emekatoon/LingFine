@@ -1,0 +1,223 @@
+{
+  "_comment": "Phonological inventory for Igbo, as used by LingFine to ground ATR and tone claims. Real data from the Igbo_Fine project.",
+  "language": "Igbo",
+  "iso_code": "ibo",
+  "orthography": "Onwu (Standard Igbo / Igbo Izugbe)",
+  "version": "1.2",
+  "vowels": {
+    "count": 8,
+    "harmony_system": "ATR (Advanced Tongue Root)",
+    "inventory": [
+      {
+        "char": "i",
+        "ipa": "i",
+        "atr": "Plus",
+        "frontness": "Front",
+        "height": "High",
+        "roundness": "Unrounded"
+      },
+      {
+        "char": "ị",
+        "ipa": "ɪ",
+        "atr": "Minus",
+        "frontness": "Front",
+        "height": "High",
+        "roundness": "Unrounded"
+      },
+      {
+        "char": "e",
+        "ipa": "e",
+        "atr": "Plus",
+        "frontness": "Front",
+        "height": "Mid",
+        "roundness": "Unrounded"
+      },
+      {
+        "char": "a",
+        "ipa": "a",
+        "atr": "Minus",
+        "frontness": "Central",
+        "height": "Low",
+        "roundness": "Unrounded"
+      },
+      {
+        "char": "o",
+        "ipa": "o",
+        "atr": "Plus",
+        "frontness": "Back",
+        "height": "Mid",
+        "roundness": "Rounded"
+      },
+      {
+        "char": "ọ",
+        "ipa": "ɔ",
+        "atr": "Minus",
+        "frontness": "Back",
+        "height": "Mid",
+        "roundness": "Rounded"
+      },
+      {
+        "char": "u",
+        "ipa": "u",
+        "atr": "Plus",
+        "frontness": "Back",
+        "height": "High",
+        "roundness": "Rounded"
+      },
+      {
+        "char": "ụ",
+        "ipa": "ʊ",
+        "atr": "Minus",
+        "frontness": "Back",
+        "height": "High",
+        "roundness": "Rounded"
+      }
+    ],
+    "atr_groups": {
+      "Plus": [
+        "i",
+        "e",
+        "o",
+        "u"
+      ],
+      "Minus": [
+        "ị",
+        "a",
+        "ọ",
+        "ụ"
+      ]
+    },
+    "harmony_pairs": [
+      {
+        "plus": "i",
+        "minus": "ị"
+      },
+      {
+        "plus": "e",
+        "minus": "a"
+      },
+      {
+        "plus": "o",
+        "minus": "ọ"
+      },
+      {
+        "plus": "u",
+        "minus": "ụ"
+      }
+    ],
+    "harmony_rule": "Within a harmony domain (typically a morphological word or close morphological unit), all vowels must share the same ATR value. Disharmonic forms reflect compound-domain boundaries, loanword phonology, or annotation errors.",
+    "tone_diacritics": {
+      "high": {
+        "name": "Combining Acute Accent",
+        "unicode": "U+0301",
+        "example": "á"
+      },
+      "low": {
+        "name": "Combining Grave Accent",
+        "unicode": "U+0300",
+        "example": "à"
+      },
+      "mid": {
+        "name": "Combining Macron",
+        "unicode": "U+0304",
+        "example": "ā"
+      },
+      "underdot_subdot": {
+        "name": "Combining Dot Below",
+        "unicode": "U+0323",
+        "example": "ị, ọ, ụ",
+        "note": "Marks -ATR vowels lexically. NOT a tone diacritic."
+      }
+    }
+  },
+  "syllabic_nasals": {
+    "note": "m and n can also function as syllabic nasals (m̀, ǹ, ḿ, etc.). When syllabic they bear tone but do NOT participate in ATR harmony. Annotate such tokens with ATR=NotApplicable.",
+    "forms": [
+      "m̀",
+      "m̄",
+      "ḿ",
+      "ǹ",
+      "n̄",
+      "ń"
+    ]
+  },
+  "tone_system": {
+    "type": "Register tone",
+    "levels": [
+      "High",
+      "Mid",
+      "Low"
+    ],
+    "atomic_values_for_annotation": [
+      "H",
+      "M",
+      "L",
+      "Unsp"
+    ],
+    "note": "Mid (M) is post-lexical: derived from H or L by named mapping operations in specific syntactic environments. Lexical citation tones are H and L; M appears in surface realisations only."
+  },
+  "grounding_micro": "Igbo ATR: every vowel belongs to one class — +ATR: i, e, o, u; −ATR: ị, a, ọ, ụ. The dot-below is lexical, not a tone mark: o and ọ are different vowels in opposite classes. A word's ATR = the shared class of its vowels (strip tone marks first, keep dots). Mixed classes = disharmonic (compound/loanword — report, don't force a value). No vowels (syllabic nasal m̀/ń) = NotApplicable. Harmonizing affixes (e.g. participle E-, infinitive I-) have no fixed vowel: derive the ROOT's ATR first, then select the affix vowel from the pairs i↔ị, e↔a, o↔ọ, u↔ụ and copy the root's ATR — rí→èrí, gbá→àgbá; never assign an affix's ATR independently. Never guess ATR — derive it from the vowels and show the derivation.",
+  "universal_atr_derivation": {
+    "scope": "Applies to EVERY Igbo word — including words NOT present in this dataset. ATR is never guessed from meaning, frequency, part of speech, or resemblance to other words; it is COMPUTED from the word's vowels using the procedure below. The per-token atr_derivation fields in this dataset are worked demonstrations of this same procedure.",
+    "procedure": [
+      "1. Take the word exactly as written (surface form or lemma). Lowercase it.",
+      "2. Remove tone diacritics ONLY: acute (U+0301), grave (U+0300), macron (U+0304). NEVER remove the dot-below (U+0323): ị, ọ, ụ are distinct -ATR vowels, not variants of i, o, u.",
+      "3. List the word's vowels in order and classify each using atr_groups: i, e, o, u → Plus; ị, a, ọ, ụ → Minus.",
+      "4. If every vowel is Plus → the word's ATR is Plus. If every vowel is Minus → ATR is Minus.",
+      "5. If the vowels are mixed → the word is Disharmonic: a compound-domain boundary, loanword, or transcription error. Report the disharmony; do not silently assign a single ATR value.",
+      "6. If the word has no vowels (syllabic nasals m̀, ḿ, ǹ, ń, ...) → ATR=NotApplicable; syllabic nasals bear tone but never participate in ATR harmony."
+    ],
+    "morpheme_atr_classes": {
+      "statement": "Igbo morphemes divide into TWO ATR classes, and the derivation direction differs. (a) LEXICALLY FIXED morphemes (roots, nouns, most free words): vowels are inherent; compute ATR from the vowels using the procedure above. (b) ATR-DEPENDENT (harmonizing) morphemes — chiefly vocalic affixes: the vowel itself is UNDERSPECIFIED between a harmony pair and is SELECTED by the root's class. For these, ATR is never derived independently — it is copied from the controlling root. In annotations this is marked ATR_Role=Dep with ATRCtrl pointing at the controller.",
+      "dependent_realization_procedure": [
+        "1. Identify the controlling root in the same morphological word (for verbal prefixes: the verb root).",
+        "2. Derive the ROOT's ATR from the root's own vowels (procedure above).",
+        "3. Select the affix vowel from its harmony pair: +ATR root → the Plus member (i, e, o, u); −ATR root → the Minus member (ị, a, ọ, ụ).",
+        "4. The affix's surface ATR = the root's ATR, by copying — not by independent computation.",
+        "5. Verification direction: an affix vowel that disagrees with its root's class is a HARMONY VIOLATION — flag it; do not rationalise it."
+      ],
+      "known_harmonizing_affixes": [
+        {
+          "affix": "progressive/participle prefix E-",
+          "realizes": "è/é with +ATR roots · à/á with −ATR roots",
+          "examples": "rí (+ATR) → èrí · gbá (−ATR) → àgbá · zụ̀ (−ATR) → àzụ̀"
+        },
+        {
+          "affix": "infinitive prefix I-",
+          "realizes": "í with +ATR roots · ị́ with −ATR roots",
+          "examples": "rí → írí ('to eat') · zụ̀ → ị́zụ̀ ('to buy')"
+        }
+      ],
+      "note": "This list is not exhaustive — harmonizing suffixes exist and follow the same pair-selection; they will be catalogued as the corpus attests them. This section governs vowel quality and ATR only; affix TONE is governed separately by the tone rule catalog (e.g. the participle prefix's polar tone)."
+    },
+    "worked_examples": [
+      {
+        "word": "égwú",
+        "vowels": "e=Plus, u=Plus",
+        "atr": "Plus"
+      },
+      {
+        "word": "ákwụ́kwọ́",
+        "vowels": "a=Minus, ụ=Minus, ọ=Minus",
+        "atr": "Minus"
+      },
+      {
+        "word": "ńrí",
+        "vowels": "i=Plus",
+        "atr": "Plus"
+      },
+      {
+        "word": "kèdụ́",
+        "vowels": "e=Plus, ụ=Minus",
+        "atr": "Disharmonic — mixed classes; report, do not force a value"
+      },
+      {
+        "word": "m̀",
+        "vowels": "(none — syllabic nasal)",
+        "atr": "NotApplicable"
+      }
+    ],
+    "anti_pattern": "For ATR-dependent affixes (see morpheme_atr_classes) NEVER assign ATR from the affix alone — derive the root first, then copy. Two words differing only by the dot-below (o vs ọ, u vs ụ, i vs ị) belong to OPPOSITE harmony classes — never treat them as spelling variants. If the correct orthography of an unseen word is uncertain, state the ambiguity and give the ATR for each candidate spelling rather than picking one silently. When annotating any new word, SHOW the vowel-by-vowel derivation (as in worked_examples), then state the ATR."
+  },
+  "usage_for_consumers": "Every token in the sentences array carries an atr_derivation field showing how its ATR=X claim was mechanically derived from the word's vowels against this inventory. To verify a claim, look up each vowel in vowels.inventory; if all vowels agree on ATR, the claim should match. Disharmonic lemmas (vowels disagree) are flagged at the token level and should be treated as legitimate exceptions only when supported by lexical evidence (compounds, loanwords). FOR WORDS NOT IN THIS DATASET: apply universal_atr_derivation — compute the ATR from the vowels using its procedure; never guess, and never assign ATR without showing the vowel classification."
+}
