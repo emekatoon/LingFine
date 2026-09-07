@@ -1,0 +1,131 @@
+# LingFine
+
+LingFine is a browser-based linguistic annotation environment for building
+richly annotated datasets for languages whose surface forms are shaped by
+interacting systems of morphology, tone, and vowel harmony. It is developed
+against Igbo and designed to extend to languages with comparable
+morphotonological structure.
+
+Annotation runs at three levels. Sentences carry clause type, force, polarity,
+tense, aspect, mood, focus, and discourse context. Tokens carry lemmas,
+part-of-speech categories, dependency relations, and tonal and ATR features.
+Words decompose into prefixes, roots, suffixes, and auxiliaries, each annotated
+in its own right.
+
+The framework records why a surface form occurs, not only that it occurs.
+Conventional tools capture surface facts as static records. LingFine links
+realised forms to their grammatical triggers and derivational processes,
+capturing lexical and realised tone, tone-control and ATR-control
+relationships, mapping operations, harmony-domain structure, morpheme-internal
+composition, and derivation-rule citation.
+
+A single annotation pass yields several resources at once. Export is to CoNLL-U
+at two levels: a standard treebank of inter-token dependencies, and an intraword
+layer using the multiword-token mechanism for relations between morphemes inside
+complex words. Registries for lexical items, morphemes, and derivation rules
+build incrementally, with consistency checking and POS-keyed homophone
+disambiguation, so the same pass yields a lexicon, a morpheme inventory, and
+derivation-rule documentation alongside the treebank.
+
+<!-- SCREENSHOT: the three-level annotation view for a single sentence — caption it to show sentence, token and morpheme panels together -->
+![Annotation workspace](docs/images/workspace.png)
+
+## Annotation levels
+
+**Sentence.** Clause type, illocutionary force, polarity, tense, aspect, mood,
+focus, and surrounding discourse context are recorded as sentence-scoped
+features, establishing the grammatical environment in which token- and
+morpheme-level realisations are licensed.
+
+**Token.** Each token carries a lemma, a part-of-speech category, a dependency
+relation to its head, and its tonal and ATR features — both the lexical
+(underlying) values and the realised (surface) values, so the difference
+between them is explicit rather than lost.
+
+**Morpheme.** Complex words decompose into prefixes, roots, suffixes, and
+auxiliaries. Each morpheme is annotated in its own right, and the relations
+between morphemes inside a word are recorded, so word-internal structure is
+first-class rather than collapsed into the token.
+
+<!-- SCREENSHOT: a single complex word decomposed into its morphemes with tone/ATR fields visible — caption it to highlight lexical vs realised tone on one morpheme -->
+![Morpheme decomposition](docs/images/morpheme.png)
+
+## Registries and validation
+
+Three registries build incrementally as annotation proceeds:
+
+- **Lexicon** — lexical items keyed for POS so homophones with distinct
+  categories are disambiguated rather than merged.
+- **Morpheme inventory** — the recurring prefixes, roots, suffixes, and
+  auxiliaries encountered, with their attested behaviour.
+- **Derivation rules** — documented rules, each with a stable identifier that
+  token- and morpheme-level annotations can cite.
+
+Consistency checking runs against these registries during annotation, flagging
+divergence between a new annotation and the accumulated record so drift is
+caught as it happens rather than in a later audit.
+
+## Export
+
+| Target | Level | Contents |
+| --- | --- | --- |
+| CoNLL-U (treebank) | Inter-token | Standard dependency treebank: one token per row, with lemma, POS, head, and dependency relation. |
+| CoNLL-U (intraword) | Intra-word | Morpheme-level relations inside complex words, using the multiword-token mechanism. |
+| Lexicon | Lexical | POS-keyed lexical items with disambiguated homophones. |
+| Morpheme inventory | Morphological | Recurring morphemes with attested behaviour. |
+| Derivation rules | Derivational | Documented rules with citable identifiers. |
+| Phonological inventory | Phonological | Vowel and consonant inventory with the grounding used to resolve ATR and tone claims. |
+| Progress (JSON) | All | Complete, self-contained snapshot of the working session for backup and transfer. |
+
+## Downstream uses
+
+The exported resources are intended to support dependency parsing and treebank
+research, morphological analysis, tone and ATR modelling, lexicon and
+morpheme-inventory construction, and the training and evaluation of models on
+languages whose orthography under-represents tone and vowel harmony.
+
+## Repository contents
+
+| Path | Purpose |
+| --- | --- |
+| `docs/annotation-guide.md` | Feature definitions across the three levels, plus derivation, registries, consistency checking, hard cases, and export mapping. |
+| `docs/tone-conventions.md` | Tone notation, lexical vs realised marking, encoding, and Unicode normalisation. |
+| `data/phonology.json` | Schema for the phonological inventory. |
+| `data/sample.json` | Schema for one annotated record across all three levels. |
+| `CHANGELOG.md` | Release history. |
+| `CITATION.cff` | Citation metadata. |
+
+<!-- SCREENSHOT: an export view or a rendered CoNLL-U snippet — caption it to show the two-level CoNLL-U output -->
+![Export](docs/images/export.png)
+
+## How to run
+
+LingFine is a single self-contained HTML file with no build step and no
+dependencies. Open it in a modern browser:
+
+1. Download the annotation-tool HTML file.
+2. Open it directly in Chrome, Edge, or Firefox.
+
+No installation, server, or network connection is required for annotation.
+
+## Documentation
+
+- [Annotation guide](docs/annotation-guide.md)
+- [Tone conventions](docs/tone-conventions.md)
+
+## Status
+
+Version 0.1.0 — first public release. The tool is in active use. Development
+prior to this release was carried out as locally iterated, versioned files and
+is being placed under version control for the first time.
+
+## About
+
+LingFine is developed at Nkoha Resources Ltd as part of Igbo_Fine, a project
+producing annotated Igbo datasets. The tool, its documentation, and a small
+illustrative sample are released publicly; the annotated corpus itself is a
+commercial asset and is not published.
+
+## Licence
+
+Released under the MIT Licence. See [LICENSE](LICENSE).
