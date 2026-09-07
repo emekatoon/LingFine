@@ -1,0 +1,142 @@
+# Worked example
+
+A single annotated sentence, shown at all three levels with the **complete tags**
+LingFine produces, then as it exports. This is one illustrative record; the full
+corpus is not published.
+
+> **ọ́ nà èrí ńrī** — "He eats"
+> (lemma layer: *ó nà È-rí ńrí*)
+
+Every surface tone mark is **derived**, not merely recorded. The full feature
+strings below show the lexical value, the realised value, the licensing
+environment, and the mapping operation for each unit.
+
+## 1. Sentence level
+
+The grammatical environment that licenses everything below it.
+
+| Feature | Value |
+| --- | --- |
+| Clause type | Main |
+| Force | Declarative |
+| Polarity | Affirmative |
+| Aspect | Present progressive |
+| Focus | No |
+
+## 2. Token level
+
+Four tokens. Each row summarises; the full tag for every token follows.
+
+| # | Form | Lemma | POS | Tone (lex → real) | ATR |
+| --- | --- | --- | --- | --- | --- |
+| 1 | ọ́ | ó | PRON | Unsp → **H** | Minus |
+| 2 | nà | nà | AUX | Unsp → **L** | Minus |
+| 3 | èrí | rí | VERB (VWORD) | → **LH** | Plus |
+| 4 | ńrī | ńrí | NOUN | HH → **HM** | Plus |
+
+Full tags:
+
+```
+ọ́    PRON|PronType=Prs|Person=3|Number=Sing|Case=Nom|Tone=H|Tone_Lemma=Unsp|
+      Tone_Role=Dep|ToneCtrl=Context.Force:Declarative|ATR=Minus|ATR_Role=Dep|
+      ATRCtrl=VerbForm:Fin|ATRMap=Harmony|Context.Focus=No|Context.Polarity=Pos|
+      Context.Force=Declarative
+
+nà    AUX|VerbForm=Fin|Tense=Pres|Aspect=Prog|Mood=Ind|Polarity=Pos|Tone=L|
+      Tone_Lemma=Unsp|Tone_Role=Dep|
+      ToneCtrl=Polarity:Pos+Context.Force:Declarative+ClauseType:Main|
+      ATR=Minus|ATR_Role=Ctrl|ATRCtrl=self|Context.Force=Declarative|
+      Context.Polarity=Pos|Context.Focus=No
+
+èrí   VWORD|VerbForm=Part|Tense=Pres|Aspect=Prog|Mood=Ind|Polarity=Pos|
+      SituationType=Dynamic|Tone=LH|ATR=Plus|ATRMap=Harmony|SVC=No|
+      ClauseType=Main|Context.Force=Declarative|Context.Polarity=Pos|
+      Context.Focus=No
+
+ńrī   NOUN|Number=Sing|Case=Acc|Tone=HM|Tone_Lemma=HH|Tone_Role=Dep|
+      ToneCtrl=VerbForm:Part+NPPosition:Final|ToneMap=LowerRightmostToMid|
+      ATR=Plus|ATR_Role=Inherent|Context.Force=Declarative|
+      Context.Polarity=Pos|Context.Focus=No
+```
+
+> The tags are shown wrapped for readability; in the data each is a single
+> `|`-separated string on one line. The object noun `ńrī` is the clearest
+> derivation: lexical **HH**, realised **HM**, via
+> `ToneCtrl=VerbForm:Part+NPPosition:Final` and `ToneMap=LowerRightmostToMid`.
+
+## 3. Morpheme level
+
+The verb `èrí` (VWORD) decomposes into a prefix and a root. The wrapper carries
+the **realised word melody** (`Tone=LH`); the **derivation** lives on the
+constituents.
+
+| # | Morpheme | Lemma | Type | Tone (lex → real) | ATR |
+| --- | --- | --- | --- | --- | --- |
+| 3.1 | è | È | Prefix | Unsp → **L** | Minus |
+| 3.2 | rí | rí | Root | H → **H** | Plus |
+
+Full tags:
+
+```
+è     PART|PartType=Affix|MorphBoundary=Prefix|Aspect=Prog|Tone=L|
+      Tone_Lemma=Unsp|Tone_Role=Dep|ToneCtrl=VerbRoot|ToneMap=Inverse|
+      ATR=Minus|ATR_Role=Dep|ATRCtrl=VerbRoot+ClauseType:Main|ATRMap=Harmony|
+      Context.Force=Declarative|Context.Polarity=Pos|Context.Focus=No
+
+rí    ROOT|VerbType=Lex|VerbForm=Part|VerbClass=Dynamic|Tense=Pres|Aspect=Prog|
+      Mood=Ind|Polarity=Pos|Tone=H|Tone_Lemma=H|Tone_Role=Dep|
+      ToneCtrl=Tense:Pres+ClauseType:Main|ToneMap=Identity|ATR=Plus|
+      ATRCtrl=VerbRoot|ATRMap=Identity|ClauseType=Main|
+      Context.Force=Declarative|Context.Polarity=Pos|Context.Focus=No
+```
+
+The prefix `è-` is the ATR-dependent case: it has no fixed vowel of its own.
+With the +ATR root *rí* it surfaces as **è-**; with a −ATR root such as *gbá*
+the same prefix surfaces as **à-** (*à-gbá*). The root controls
+(`ATRCtrl` on the prefix names `VerbRoot`); the affix copies.
+
+## 4. Derivation, spelled out
+
+Taking the object noun through the four-part model the framework uses:
+
+```
+underlying:  ńrí            (Tone_Lemma = HH)
+trigger:     ToneCtrl = VerbForm:Part + NPPosition:Final
+operation:   ToneMap  = LowerRightmostToMid
+surface:     ńrī            (Tone = HM)
+rule_id:     np_final_participle_lowering
+```
+
+Nothing is asserted: each step cites the environment and the operation, so the
+surface form is reproducible from the lemma plus the rule.
+
+## 5. Export
+
+The same record exports to CoNLL-U at two levels — inter-token dependencies as a
+standard treebank, and the morphemes of `èrí` as an intraword layer using the
+multiword-token mechanism (the `3-3.2` range row). FEATS is abbreviated here for
+width; the authoritative fields are the full tags above.
+
+```conllu
+# text = ọ́ nà èrí ńrī
+# text_eng = He eats
+1     ọ́    ó     PRON   _   Case=Nom|Tone=H|ATR=Minus                     0   root   _   _
+2     nà    nà    AUX    _   Aspect=Prog|Tone=L|ATR=Minus                  3   aux    _   _
+3-3.2 èrí   _     _      _   _                                             _   _      _   _
+3     rí    rí    VERB   _   VerbForm=Part|Tone=H|ATR=Plus                 1   _      _   ToneMap=Identity
+3.1   è     È     PART   _   Aspect=Prog|Tone=L|ATR=Minus|ATR_Role=Dep     3   _      _   ATRCtrl=VerbRoot
+4     ńrī   ńrí   NOUN   _   Case=Acc|Tone=HM|Tone_Lemma=HH|ATR=Plus       3   obj    _   ToneMap=LowerRightmostToMid|Rule=np_final_participle_lowering
+```
+
+> This CoNLL-U is illustrative of the two-level structure and column usage;
+> column values follow the mapping in the
+> [annotation guide](annotation-guide.md#export-mapping). Replace with a real
+> tool export before publishing.
+
+## Why this matters
+
+A conventional treebank would record that `ńrī` has tone HM and stop there. This
+record additionally states **why** — the lexical HH, the triggering environment,
+the operation, and a citable rule — so a single annotation pass yields a
+treebank, a lexicon, a morpheme inventory, and executable derivation rules at
+once.
